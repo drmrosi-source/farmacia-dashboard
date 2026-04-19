@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmacia Sant'Agata — Circolari</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #FAFAF8;
+  --card: #FFFFFF;
+  --text: #1A1A18;
+  --text2: #6B6B65;
+  --text3: #9C9C94;
+  --border: #E8E8E3;
+  --accent: #2B5CE6;
+  --accent-bg: #EEF2FE;
+  --danger: #D93025;
+  --danger-bg: #FEF0EF;
+  --warning: #E37400;
+  --warning-bg: #FEF5E7;
+  --success: #188038;
+  --success-bg: #E6F4EA;
+  --purple: #7B61FF;
+  --purple-bg: #F3F0FF;
+}
+
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+.topbar {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-logo {
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.topbar h1 {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-status {
+  font-size: 12px;
+  color: var(--success);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.topbar-status::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem;
+  transition: transform 0.15s;
+}
+
+.stat-card:hover { transform: translateY(-2px); }
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.stat-card.danger .stat-value { color: var(--danger); }
+.stat-card.warning .stat-value { color: var(--warning); }
+.stat-card.success .stat-value { color: var(--success); }
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 240px;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 14px 10px 40px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  background: var(--card);
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.search-box input:focus { border-color: var(--accent); }
+
+.search-box::before {
+  content: '\2315';
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3);
+  font-size: 18px;
+}
+
+.filter-btn {
+  padding: 10px 18px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text2);
+}
+
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+.refresh-btn {
+  padding: 10px 18px;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.refresh-btn:hover { background: var(--accent); color: white; }
+
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead th {
+  text-align: left;
+  padding: 14px 16px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text3);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky;
+  top: 64px;
+  z-index: 10;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #F5F5F2; }
+tbody tr.urgent { background: var(--danger-bg); }
+tbody tr.urgent:hover { background: #FDE8E6; }
+
+td { padding: 14px 16px; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.badge-informativa { background: var(--accent-bg); color: var(--accent); }
+.badge-richiede_risposta { background: var(--warning-bg); color: var(--warning); }
+.badge-richiede_compilazione { background: var(--danger-bg); color: var(--danger); }
+
+.date-cell {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+.subject-cell {
+  font-weight: 500;
+  max-width: 350px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sender-cell {
+  color: var(--text2);
+  font-size: 13px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scadenza-cell {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+}
+
+.scadenza-cell.scaduta { color: var(--danger); font-weight: 600; }
+.scadenza-cell.prossima { color: var(--warning); font-weight: 600; }
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 200;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.modal-overlay.show { display: flex; }
+
+.modal {
+  background: var(--card);
+  border-radius: 18px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 2rem;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text2);
+  flex-shrink: 0;
+}
+
+.modal h2 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+  padding-right: 1rem;
+}
+
+.modal-meta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.modal-meta span {
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.modal-section {
+  margin-bottom: 1.5rem;
+}
+
+.modal-section h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text3);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.modal-section p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.modal-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.modal-section ul li {
+  padding: 6px 0;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.modal-section ul li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem;
+  color: var(--text3);
+  font-size: 15px;
+}
+
+.empty {
+  text-align: center;
+  padding: 4rem;
+  color: var(--text3);
+}
+
+@media (max-width: 768px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .container { padding: 1rem; }
+  .topbar { padding: 0 1rem; }
+  td:nth-child(4), th:nth-child(4) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">SA</div>
+    <h1>Farmacia Sant'Agata</h1>
+  </div>
+  <div class="topbar-right">
+    <div class="topbar-status">Agente attivo</div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-label">Totale circolari</div>
+      <div class="stat-value" id="stat-total">-</div>
+    </div>
+    <div class="stat-card danger">
+      <div class="stat-label">Compilazione</div>
+      <div class="stat-value" id="stat-compilazione">-</div>
+    </div>
+    <div class="stat-card warning">
+      <div class="stat-label">Risposta</div>
+      <div class="stat-value" id="stat-risposta">-</div>
+    </div>
+    <div class="stat-card success">
+      <div class="stat-label">Informative</div>
+      <div class="stat-value" id="stat-informativa">-</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Cerca per oggetto, mittente...">
+    </div>
+    <button class="filter-btn active" data-filter="tutte">Tutte</button>
+    <button class="filter-btn" data-filter="richiede_compilazione">Compilazione</button>
+    <button class="filter-btn" data-filter="richiede_risposta">Risposta</button>
+    <button class="filter-btn" data-filter="informativa">Informative</button>
+    <button class="refresh-btn" onclick="loadData()">Aggiorna</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Oggetto</th>
+          <th>Mittente</th>
+          <th>Tipo</th>
+          <th>Scadenza</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <tr><td colspan="5" class="loading">Caricamento circolari...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title"></h2>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-meta" id="modal-meta"></div>
+    <div class="modal-section">
+      <h3>Riassunto</h3>
+      <p id="modal-riassunto"></p>
+    </div>
+    <div class="modal-section">
+      <h3>Punti chiave</h3>
+      <ul id="modal-punti"></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURAZIONE: inserisci qui l'URL del webhook n8n
+// ============================================================
+const API_URL = 'https://primary-production-43bf9.up.railway.app/webhook/circolari';
+
+let allData = [];
+let currentFilter = 'tutte';
+
+async function loadData() {
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '<tr><td colspan="5" class="loading">Caricamento...</td></tr>';
+
+  try {
+    const res = await fetch(API_URL);
+    allData = await res.json();
+    updateStats();
+    renderTable();
+  } catch (e) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty">Errore di connessione. Verifica l\'URL del webhook.</td></tr>';
+  }
+}
+
+function updateStats() {
+  document.getElementById('stat-total').textContent = allData.length;
+  document.getElementById('stat-compilazione').textContent = allData.filter(d => d.classificazione === 'richiede_compilazione').length;
+  document.getElementById('stat-risposta').textContent = allData.filter(d => d.classificazione === 'richiede_risposta').length;
+  document.getElementById('stat-informativa').textContent = allData.filter(d => d.classificazione === 'informativa').length;
+}
+
+function renderTable() {
+  const tbody = document.getElementById('table-body');
+  const search = document.getElementById('search').value.toLowerCase();
+
+  let filtered = allData;
+
+  if (currentFilter !== 'tutte') {
+    filtered = filtered.filter(d => d.classificazione === currentFilter);
+  }
+
+  if (search) {
+    filtered = filtered.filter(d =>
+      (d.oggetto || '').toLowerCase().includes(search) ||
+      (d.mittente || '').toLowerCase().includes(search) ||
+      (d.riassunto || '').toLowerCase().includes(search)
+    );
+  }
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty">Nessuna circolare trovata</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((d, i) => {
+    const isUrgent = d.classificazione !== 'informativa';
+    const scadClass = getScadenzaClass(d.scadenza_azione);
+    const punti = typeof d.punti_chiave === 'string' ? d.punti_chiave : JSON.stringify(d.punti_chiave);
+
+    return `<tr class="${isUrgent ? 'urgent' : ''}" onclick='openModal(${JSON.stringify(d).replace(/'/g, "&#39;")})'>
+      <td class="date-cell">${formatDate(d.data_circolare)}</td>
+      <td class="subject-cell">${escapeHtml(d.oggetto || 'Senza oggetto')}</td>
+      <td class="sender-cell">${escapeHtml(extractName(d.mittente))}</td>
+      <td><span class="badge badge-${d.classificazione}">${formatClassificazione(d.classificazione)}</span></td>
+      <td class="scadenza-cell ${scadClass}">${d.scadenza_azione ? formatDate(d.scadenza_azione) : '-'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function formatDate(d) {
+  if (!d) return '-';
+  const date = new Date(d);
+  return date.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+function formatClassificazione(c) {
+  const map = {
+    'informativa': 'Info',
+    'richiede_risposta': 'Risposta',
+    'richiede_compilazione': 'Compilazione'
+  };
+  return map[c] || c;
+}
+
+function extractName(from) {
+  if (!from) return '';
+  const match = from.match(/^([^<]+)/);
+  return match ? match[1].trim() : from;
+}
+
+function getScadenzaClass(scad) {
+  if (!scad) return '';
+  const diff = (new Date(scad) - new Date()) / (1000 * 60 * 60 * 24);
+  if (diff < 0) return 'scaduta';
+  if (diff < 7) return 'prossima';
+  return '';
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function openModal(data) {
+  document.getElementById('modal-title').textContent = data.oggetto || 'Senza oggetto';
+  document.getElementById('modal-meta').innerHTML = `
+    <span>Da: ${escapeHtml(data.mittente || '')}</span>
+    <span>Data: ${formatDate(data.data_circolare)}</span>
+    <span class="badge badge-${data.classificazione}">${formatClassificazione(data.classificazione)}</span>
+    ${data.scadenza_azione ? `<span>Scadenza: ${formatDate(data.scadenza_azione)}</span>` : ''}
+  `;
+  document.getElementById('modal-riassunto').textContent = data.riassunto || 'Nessun riassunto disponibile';
+
+  let punti = data.punti_chiave;
+  if (typeof punti === 'string') {
+    try { punti = JSON.parse(punti); } catch(e) { punti = [punti]; }
+  }
+  if (!Array.isArray(punti)) punti = [];
+
+  document.getElementById('modal-punti').innerHTML = punti.map(p => `<li>${escapeHtml(p)}</li>`).join('');
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderTable();
+  });
+});
+
+document.getElementById('search').addEventListener('input', renderTable);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+loadData();
+setInterval(loadData, 5 * 60 * 1000);
+</script>
+</body>
+</html>
