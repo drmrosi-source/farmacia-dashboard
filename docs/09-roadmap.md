@@ -26,8 +26,9 @@ dall'agente personale, con Massimo che approva tutto (default categoria B).
 - Nessun invio verso terzi avviene senza approvazione di Massimo.
 - Le correzioni di Massimo vengono registrate.
 
-**Rischi/decisioni da chiudere:** approvazione dei template di servizio WhatsApp da parte
-di Meta (§08.3), retention (§07), hosting/regione (§07).
+**Rischi/decisioni da chiudere:** **topologia dei numeri** (opzione A/B, §08.1.0 — da
+decidere per primo perché condiziona l'onboarding), approvazione dei template di servizio
+WhatsApp da parte di Meta (§08.3), retention (§07), hosting/regione (§07).
 
 ## Fase 2 — Prenotazioni e memoria
 

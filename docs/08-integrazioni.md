@@ -8,6 +8,38 @@ non l'agente.
 
 **Provider:** WhatsApp Business Cloud API (Meta).
 
+### 8.1.0 Topologia dei numeri (vincolo fondamentale)
+
+**Vincolo tecnico rigido:** un numero collegato alla Cloud API di Meta **non può più
+essere usato nella normale app WhatsApp**. L'uso è esclusivo: o app, o API. Questo
+determina *quale* numero mettiamo sulla piattaforma e ha impatto diretto sulla vita
+quotidiana del titolare.
+
+Ne deriva una topologia a **due numeri**:
+
+| Numero | Dove vive | A cosa serve |
+|--------|-----------|--------------|
+| **Numero-piattaforma** | Cloud API (gestito dagli agenti) | Riceve i messaggi degli interlocutori esterni → viene filtrato dagli agenti. Non usabile nell'app del telefono. |
+| **Numero personale di Massimo** | App WhatsApp normale sul suo telefono | Vita privata, intatta. Riceve dal bot le richieste di approvazione/notifica (canale di controllo, §8.3). |
+
+Con questa impostazione **gli agenti non leggono mai il numero personale di Massimo**:
+vedono solo il traffico del numero-piattaforma. Il personale riceve unicamente le
+notifiche generate dal bot.
+
+**[DA DECIDERE — scelta di onboarding, proprietario: Massimo]**
+
+- **Opzione A (consigliata):** il numero-piattaforma è un **numero nuovo** (seconda SIM /
+  numero virtuale). Il numero personale resta sul telefono e continua a funzionare
+  normalmente. I contatti nuovi scrivono al numero-piattaforma; i vecchi si reindirizzano
+  gradualmente. Rischio basso, reversibile.
+- **Opzione B:** il **numero storico** di Massimo viene migrato sulla Cloud API (filtra
+  esattamente i contatti già esistenti), ma da quel momento **non è più usabile nell'app**
+  e Massimo adotta un nuovo numero per la vita privata. Cambio più impegnativo e meno
+  reversibile.
+
+> Nota: l'app *WhatsApp Business* (gratuita) gira sul telefono ma **non** offre webhook/
+> automazione server-side: non abilita gli agenti. Per la piattaforma serve la Cloud API.
+
 ### Ingresso
 - Endpoint webhook unico (P1) esposto dall'orchestratore.
 - Setup: verifica `verify_token` (challenge GET di Meta), poi ricezione POST.
@@ -51,10 +83,11 @@ reschedule_booking(booking_id, nuovo_slot) -> ok  # riprogramma
 
 Il modo in cui la piattaforma chiede approvazioni (categoria B) e invia notifiche.
 
-**Scelta: WhatsApp.** Il canale di controllo è WhatsApp stesso, su una chat riservata tra
-Massimo e la piattaforma (numero/identità dedicata del bot). Un solo canale, un solo
-numero, coerente con il principio "un solo punto d'ingresso" (P1) e con la preferenza del
-titolare.
+**Scelta: WhatsApp.** Il canale di controllo è WhatsApp stesso: il **bot (numero-
+piattaforma)** scrive al **numero personale di Massimo** (§8.1.0), che resta un normale
+utente dell'app. Massimo riceve così approvazioni e notifiche nella sua chat WhatsApp e
+risponde normalmente. Coerente con la preferenza del titolare e con il principio "un solo
+punto d'ingresso" (P1).
 
 ### Come si gestiscono i due vincoli WhatsApp
 - **Pulsanti di approvazione**: si usano i messaggi **interattivi** di WhatsApp (*reply
