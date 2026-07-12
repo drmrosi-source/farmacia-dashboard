@@ -16,7 +16,8 @@ dall'agente personale, con Massimo che approva tutto (default categoria B).
 - [ ] Router (Haiku) con output strutturato (§03).
 - [ ] Agente personale "Massimo" in modalità **B** (suggerisce, non invia).
 - [ ] Policy engine con categorie A/B/C (regole baseline §06).
-- [ ] Canale di controllo (Telegram/WhatsApp) con approva/modifica/rifiuta.
+- [ ] Canale di controllo su **WhatsApp** (chat riservata) con pulsanti interattivi
+      approva/modifica/rifiuta + template di servizio per la finestra 24h (§08.3).
 - [ ] Tool `send_whatsapp`, `notify_massimo`, tool di memoria di base.
 - [ ] Osservabilità minima: log strutturati + `audit_log` (§10).
 
@@ -25,8 +26,8 @@ dall'agente personale, con Massimo che approva tutto (default categoria B).
 - Nessun invio verso terzi avviene senza approvazione di Massimo.
 - Le correzioni di Massimo vengono registrate.
 
-**Rischi/decisioni da chiudere:** canale di controllo (§08.3), retention (§07),
-hosting/regione (§07).
+**Rischi/decisioni da chiudere:** approvazione dei template di servizio WhatsApp da parte
+di Meta (§08.3), retention (§07), hosting/regione (§07).
 
 ## Fase 2 — Prenotazioni e memoria
 

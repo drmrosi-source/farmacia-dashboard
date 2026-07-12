@@ -51,23 +51,36 @@ reschedule_booking(booking_id, nuovo_slot) -> ok  # riprogramma
 
 Il modo in cui la piattaforma chiede approvazioni (categoria B) e invia notifiche.
 
-Opzioni:
-- **WhatsApp dedicato** (un numero/chat riservata Massimo↔piattaforma): coerente con il
-  canale principale, ma soggetto ai vincoli 24h.
-- **Telegram Bot**: nessun vincolo di finestra, pulsanti inline (✅/✏️/❌) nativi, ideale
-  per approvazioni rapide.
+**Scelta: WhatsApp.** Il canale di controllo è WhatsApp stesso, su una chat riservata tra
+Massimo e la piattaforma (numero/identità dedicata del bot). Un solo canale, un solo
+numero, coerente con il principio "un solo punto d'ingresso" (P1) e con la preferenza del
+titolare.
 
-**Raccomandazione:** Telegram Bot per il canale di controllo (pulsanti + no finestra
-24h), mantenendo WhatsApp per gli interlocutori esterni. [DA DECIDERE — conferma di
-Massimo.]
+### Come si gestiscono i due vincoli WhatsApp
+- **Pulsanti di approvazione**: si usano i messaggi **interattivi** di WhatsApp (*reply
+  buttons* / *list messages*) per offrire ✅ Approva / ✏️ Modifica / ❌ Rifiuta. La
+  modifica del testo si fa con un messaggio di risposta libero.
+- **Finestra di servizio 24h**: fuori dalle 24h dall'ultimo messaggio di Massimo, Meta
+  consente solo **template pre-approvati**. Si registrano quindi 1–2 **message template**
+  di servizio (es. `approvazione_in_attesa` con variabili `{contatto}` e `{oggetto}`).
+  Il template riapre la finestra; da lì la conversazione prosegue in testo libero con i
+  pulsanti interattivi. In pratica, interagendo spesso, la finestra resta quasi sempre
+  aperta.
+
+> Requisito operativo [FASE 1]: creare e far approvare da Meta i template del canale di
+> controllo prima del go-live. Elenco template in `appendici/struttura-repo.md`.
 
 ### Tool
 ```text
-notify_massimo(livello, testo, azioni?) -> ok
+notify_massimo(livello, testo, azioni?, template?) -> ok
+    # se la finestra 24h è chiusa, usa automaticamente il template di servizio
 request_approval(decision_id, testo_proposto, azioni) -> pending
+    # invia un messaggio interattivo con i pulsanti Approva/Modifica/Rifiuta
 ```
-Le risposte di approvazione rientrano come **eventi autenticati** (solo dal chat_id di
-Massimo, §07 V5) e sbloccano/annullano l'azione, registrando la correzione.
+Le risposte di approvazione rientrano dallo stesso webhook WhatsApp come **eventi
+autenticati** (solo dal numero di Massimo, §07 V5): l'orchestratore le riconosce come
+messaggi di controllo — non come messaggi di un interlocutore esterno — e sbloccano o
+annullano l'azione, registrando la correzione.
 
 ## 8.4 Google (Calendar, Gmail, Drive) — [FASE 2–3]
 

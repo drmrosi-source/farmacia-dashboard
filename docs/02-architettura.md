@@ -29,7 +29,7 @@
                     approvazione │        integrazioni│      Postgres+pgvector
                     umana (B)    ▼                 ▼
                           Massimo (WhatsApp/    Calendly, Google
-                          Telegram di controllo) Calendar, ...
+                          chat di controllo)     Calendar, ...
 
         ┌──────────────────────────────────────────────────────────┐
         │  Agente Trainer (batch/asincrono) — legge correzioni,     │
@@ -47,7 +47,7 @@
 | **Policy engine** | Decide se l'output proposto è auto-eseguibile (C), da approvare (B) o da non inviare (A). | Deterministico, non affidato al modello (P6). Vedi §06. |
 | **Toolbox** | Implementazioni concrete degli strumenti. | Funzioni idempotenti dove possibile; ogni tool ha uno schema. |
 | **Memoria condivisa** | Persistenza di contatti, conversazioni, messaggi, decisioni, correzioni, memoria semantica. | Postgres + pgvector (§05). |
-| **Canale di controllo** | Il modo in cui la piattaforma parla a Massimo (approvazioni, notifiche). | WhatsApp dedicato o Telegram bot (§08). |
+| **Canale di controllo** | Il modo in cui la piattaforma parla a Massimo (approvazioni, notifiche). | WhatsApp, chat riservata Massimo↔bot (§08.3). |
 | **Trainer** | Processo asincrono che analizza le correzioni e propone miglioramenti. | Non in linea sul percorso del messaggio. |
 
 ## 2.3 Flusso di un messaggio in ingresso
@@ -100,7 +100,7 @@ Ogni esito (approva/modifica/rifiuta) è una **correzione** registrata per il tr
 | Coda/async | Supabase Queues o cron (`pg_cron`) per il trainer e le notifiche differite | Il percorso del messaggio è sincrono; trainer e reminder sono asincroni. |
 | Canale in ingresso | **WhatsApp Business Cloud API (Meta)** | Requisito di prodotto. |
 | Calendario | **Calendly API** + **Google Calendar** | §08. |
-| Canale di controllo | WhatsApp dedicato o **Telegram Bot** | §08 — [DA DECIDERE]. |
+| Canale di controllo | **WhatsApp** (chat riservata Massimo↔bot, messaggi interattivi + template di servizio) | §08.3. |
 | Segreti | Supabase Vault / variabili d'ambiente cifrate | §07. |
 | Osservabilità | Log strutturati + tabella `audit_log` + metriche | §10. |
 

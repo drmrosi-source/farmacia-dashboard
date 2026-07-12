@@ -39,7 +39,7 @@ per Claude Code / Codex sapere **dove** mettere le cose.
 │   │   ├── booking.system.md
 │   │   ├── pharmacy.system.md
 │   │   └── trainer.system.md
-│   ├── control-channel/        # bot Telegram/WhatsApp per approvazioni (§08.3)
+│   ├── control-channel/        # canale di controllo WhatsApp: approvazioni (§08.3)
 │   └── lib/
 │       ├── llm.ts              # client Claude, structured output, retry/backoff
 │       ├── audit.ts            # scrittura audit_log
@@ -68,10 +68,23 @@ per Claude Code / Codex sapere **dove** mettere le cose.
 
 | Fase | Tool da implementare |
 |------|----------------------|
-| 1 | `send_whatsapp`, `notify_massimo`, `request_approval`, tool memoria base, guard autorizzazioni |
+| 1 | `send_whatsapp`, `notify_massimo`, `request_approval` (messaggi interattivi), tool memoria base, guard autorizzazioni |
 | 2 | `get_availability`, `create_booking`, `reschedule_booking`, `cancel_booking`, `search_memory`, `write_memory`, `embed` |
 | 3 | tool KB farmacia (Google Drive), eventuale adattatore ingresso email (Gmail) |
 | 4 | `propose_prompt_change`, cruscotto/versionamento prompt e regole |
+
+## Template di servizio WhatsApp (canale di controllo, §08.3)
+
+Da creare e far approvare da Meta prima del go-live di fase 1:
+
+| Template | Uso | Variabili |
+|----------|-----|-----------|
+| `approvazione_in_attesa` | Notifica che c'è una proposta da approvare (riapre la finestra 24h) | `{contatto}`, `{oggetto}` |
+| `notifica_urgente` | Avviso prioritario (categoria C urgente / contatto urgente) | `{contatto}`, `{sintesi}` |
+| `digest_giornaliero` | Riepilogo delle azioni autonome | `{data}`, `{conteggio}` |
+
+Dentro la finestra 24h non servono template: si usano messaggi interattivi liberi
+(pulsanti Approva/Modifica/Rifiuta).
 
 ## Test minimi per fase 1
 - Policy engine: ogni regola A/B/C ed eccezione (§06) → esito atteso.
