@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "checksByTaskType": {
+    "CODING_STANDARD": [
+      {
+        "command": "node",
+        "args": [
+          "-e",
+          "const fs=require('fs');const html=fs.readFileSync('index.html','utf8');if(!html.includes('<!DOCTYPE html>'))throw new Error('Missing doctype');const blocks=[...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)];if(!blocks.length)throw new Error('No script block found');for(const block of blocks)new Function(block[1]);if(!html.includes('const API='))throw new Error('Missing API configuration');console.log('static dashboard checks passed');"
+        ],
+        "timeoutMs": 120000
+      }
+    ],
+    "BUG_FIX": [
+      {
+        "command": "node",
+        "args": [
+          "-e",
+          "const fs=require('fs');const html=fs.readFileSync('index.html','utf8');if(!html.includes('<!DOCTYPE html>'))throw new Error('Missing doctype');const blocks=[...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)];if(!blocks.length)throw new Error('No script block found');for(const block of blocks)new Function(block[1]);if(!html.includes('const API='))throw new Error('Missing API configuration');console.log('static dashboard checks passed');"
+        ],
+        "timeoutMs": 120000
+      }
+    ],
+    "TEST": [
+      {
+        "command": "node",
+        "args": [
+          "-e",
+          "const fs=require('fs');const html=fs.readFileSync('index.html','utf8');if(!html.includes('<!DOCTYPE html>'))throw new Error('Missing doctype');const blocks=[...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)];if(!blocks.length)throw new Error('No script block found');for(const block of blocks)new Function(block[1]);if(!html.includes('const API='))throw new Error('Missing API configuration');console.log('static dashboard checks passed');"
+        ],
+        "timeoutMs": 120000
+      }
+    ],
+    "REFACTOR": [
+      {
+        "command": "node",
+        "args": [
+          "-e",
+          "const fs=require('fs');const html=fs.readFileSync('index.html','utf8');if(!html.includes('<!DOCTYPE html>'))throw new Error('Missing doctype');const blocks=[...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)];if(!blocks.length)throw new Error('No script block found');for(const block of blocks)new Function(block[1]);if(!html.includes('const API='))throw new Error('Missing API configuration');console.log('static dashboard checks passed');"
+        ],
+        "timeoutMs": 120000
+      }
+    ],
+    "CODING_COMPLEX": [
+      {
+        "command": "node",
+        "args": [
+          "-e",
+          "const fs=require('fs');const html=fs.readFileSync('index.html','utf8');if(!html.includes('<!DOCTYPE html>'))throw new Error('Missing doctype');const blocks=[...html.matchAll(/<script(?:\\s[^>]*)?>([\\s\\S]*?)<\\/script>/gi)];if(!blocks.length)throw new Error('No script block found');for(const block of blocks)new Function(block[1]);if(!html.includes('const API='))throw new Error('Missing API configuration');console.log('static dashboard checks passed');"
+        ],
+        "timeoutMs": 120000
+      }
+    ]
+  },
+  "inferredFrom": {
+    "packageScripts": [],
+    "testsDirectory": false,
+    "manuallyConfigured": "trusted inline static HTML/JavaScript syntax check"
+  }
+}
