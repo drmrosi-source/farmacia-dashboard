@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "allowedCommands": ["git", "node", "npm", "npx"],
+  "envAllowlist": ["PATH", "HOME", "USER", "USERPROFILE", "HOMEDRIVE", "HOMEPATH", "APPDATA", "LOCALAPPDATA", "TMPDIR", "TEMP", "TMP", "CI", "COMSPEC", "SYSTEMROOT", "WINDIR", "PATHEXT"],
+  "allowedWritePrefixes": ["."],
+  "network": {"mode": "inherit"},
+  "timeoutMs": 900000,
+  "maxOutputBytes": 1048576,
+  "claudeAllowedTools": ["Read", "Edit", "Write", "Glob", "Grep", "Bash(git status:*)", "Bash(git diff:*)", "Bash(git add:*)", "Bash(git commit:*)"],
+  "claudeDisallowedTools": []
+}
